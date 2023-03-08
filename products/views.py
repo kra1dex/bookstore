@@ -1,19 +1,9 @@
-from django.http import JsonResponse
-from django.views import View
+from rest_framework.generics import ListAPIView
 
 from products.models import Book
+from products.serializers import BookListSerializer
 
 
-class BookListView(View):
-    def get(self, _):
-        books = Book.objects.all()
-
-        response = []
-        for book in books:
-            response.append({
-                'id': book.id,
-                'title': book.title,
-                'price': book.price,
-            })
-
-        return JsonResponse(response, safe=False)
+class BookListView(ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookListSerializer
