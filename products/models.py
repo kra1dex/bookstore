@@ -20,6 +20,7 @@ class Author(models.Model):
 class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500)
     genre = models.ManyToManyField(Genre)
     price = models.DecimalField(max_digits=7, decimal_places=2)
 
