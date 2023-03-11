@@ -17,8 +17,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class BookListSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
-    genre = GenreSerializer(many=True)
+    genres = GenreSerializer(many=True)
 
     class Meta:
         model = Book
-        fields = ['id', 'author', 'title', 'description', 'genre', 'price']
+        fields = ['id', 'author', 'title', 'description', 'genres', 'price']
