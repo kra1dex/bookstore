@@ -25,7 +25,7 @@ class BookListSerializer(serializers.ModelSerializer):
 
 
 class BookCreateSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
+    author = AuthorSerializer(required=False)
     genres = serializers.SlugRelatedField(slug_field='title', queryset=Genre.objects.all(), required=False, many=True)
 
     class Meta:
@@ -34,11 +34,18 @@ class BookCreateSerializer(serializers.ModelSerializer):
 
     def is_valid(self, *, raise_exception=False):
         self._genres = self.initial_data.pop('genres')
+        self._author = self.initial_data.pop('author')
         return super().is_valid(raise_exception=raise_exception)
 
     def create(self, validated_data):
-        book = Book.objects.create(**validated_data)
+        try:
+            author_obj = Author.objects.get(name=self._author['name'], surname=self._author['surname'])
+        except Author.DoesNotExist:
+            author_obj = Author.objects.create(name=self._author['name'], surname=self._author['surname'])
 
+        validated_data['author_id'] = author_obj.id
+
+        book = Book.objects.create(**validated_data)
         for genre in self._genres:
             genre_obj, _ = Genre.objects.get_or_create(title=genre)
             book.genres.add(genre_obj)
