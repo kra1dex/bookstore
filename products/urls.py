@@ -5,9 +5,8 @@ from products import views
 
 router = routers.SimpleRouter()
 router.register('genres', views.GenreViewSet)
+router.register('books', views.BookViewSet)
 
 urlpatterns = [
-    path('', views.BookListView.as_view()),
-    path('create/', views.BookCreateView.as_view()),
     path('', include(router.urls)),
 ]
