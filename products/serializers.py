@@ -15,16 +15,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BookListSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
-    genres = GenreSerializer(many=True)
-
-    class Meta:
-        model = Book
-        fields = ['id', 'author', 'title', 'description', 'genres', 'price']
-
-
-class BookCreateSerializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(required=False)
     genres = serializers.SlugRelatedField(slug_field='title', queryset=Genre.objects.all(), required=False, many=True)
 
