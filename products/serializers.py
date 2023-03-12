@@ -38,10 +38,7 @@ class BookCreateSerializer(serializers.ModelSerializer):
         return super().is_valid(raise_exception=raise_exception)
 
     def create(self, validated_data):
-        try:
-            author_obj = Author.objects.get(name=self._author['name'], surname=self._author['surname'])
-        except Author.DoesNotExist:
-            author_obj = Author.objects.create(name=self._author['name'], surname=self._author['surname'])
+        author_obj, _ = Author.objects.get_or_create(name=self._author['name'], surname=self._author['surname'])
 
         validated_data['author_id'] = author_obj.id
 
