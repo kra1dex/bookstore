@@ -18,19 +18,18 @@ class BookApiTestCase(TestCase):
         Genre.objects.bulk_create(genres)
 
         # Books
-        book1 = Book.objects.create(
+        self.book1 = Book.objects.create(
             author=author1, title='test_title', description='test_description', price=100
         )
-        book1.genres.set(genres)
-
-        # data
-        self.serializer_data = BookSerializer([book1], many=True).data
+        self.book1.genres.set(genres)
 
     def test_get_list(self):
         path = reverse('book-list')
         response = self.client.get(path)
 
-        self.assertEqual(self.serializer_data, response.data)
+        serializer_data = BookSerializer([self.book1], many=True).data
+
+        self.assertEqual(serializer_data, response.data)
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
     def test_post(self):
@@ -56,3 +55,12 @@ class BookApiTestCase(TestCase):
 
         self.assertEqual(HTTPStatus.CREATED, response.status_code)
         self.assertEqual(Book.objects.count(), 2)
+
+    def test_get_book(self):
+        path = reverse('book-detail', args=[self.book1.id])
+        response = self.client.get(path)
+
+        book_data = BookSerializer(self.book1).data
+
+        self.assertEqual(book_data, response.data)
+        self.assertEqual(HTTPStatus.OK, response.status_code)
