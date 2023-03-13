@@ -76,3 +76,9 @@ class BookUpdateSerializer(serializers.ModelSerializer):
 
         book.save()
         return book
+
+
+class BookDestroySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['id']
