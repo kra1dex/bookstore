@@ -47,7 +47,7 @@ class BookApiTestCase(TestCase):
             ],
             "title": "test",
             "description": "test",
-            "price": "00.00"
+            "price": "0.00"
         }
         json_data = json.dumps(data)
 
