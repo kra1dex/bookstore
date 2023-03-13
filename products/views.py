@@ -1,7 +1,8 @@
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.viewsets import ModelViewSet
 
 from products.models import Book, Author, Genre
-from products.serializers import BookSerializer, AuthorSerializer, GenreSerializer
+from products.serializers import BookListCreateSerializer, AuthorSerializer, GenreSerializer
 
 
 class GenreViewSet(ModelViewSet):
@@ -14,6 +15,6 @@ class AuthorViewSet(ModelViewSet):
     serializer_class = AuthorSerializer
 
 
-class BookViewSet(ModelViewSet):
+class BookListCreateView(ListCreateAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = BookListCreateSerializer
