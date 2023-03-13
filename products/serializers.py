@@ -40,3 +40,12 @@ class BookListCreateSerializer(serializers.ModelSerializer):
 
         book.save()
         return book
+
+
+class BookDetailSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(required=False)
+    genres = GenreSerializer(many=True)
+
+    class Meta:
+        model = Book
+        fields = '__all__'
